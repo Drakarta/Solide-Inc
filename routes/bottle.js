@@ -236,7 +236,7 @@ router.get("/get", async (req, res) => {
             return res.status(400).json({ error: "Bad Request. Check request payload." });
         }
 
-        const [results] = await db.query(
+        const results = await db.query(
             "SELECT * FROM bottle WHERE id = ?",
             [id]
         );

@@ -32,7 +32,7 @@ con.connect(function (err) {
   })
   con.query(`
     CREATE TABLE IF NOT EXISTS waterdata (
-      water_inname INT,
+      water_intake INT,
       user_id INT,
       created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, 
       FOREIGN KEY (user_id) REFERENCES user(id)

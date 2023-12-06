@@ -109,8 +109,8 @@ router.get("/getdrink", async (req, res) => {
             return res.status(400).json({ error: "Bad Request. Check request payload." });
         }
 
-        const [results] = await db.query(
-            'SELECT * FROM waterdata WHERE user_id = ? LIMIT 10;',
+        const results = await db.query(
+            'SELECT * FROM waterdata WHERE user_id = ?;',
             [id]
         );
         console.log(results)

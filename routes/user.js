@@ -132,12 +132,12 @@ router.get("/login", async (req, res) => {
             return res.status(400).json({ error: "Bad Request. Check request payload." });
         }
 
-        const [results] = await db.query(
+        const results = await db.query(
             "SELECT * FROM user WHERE email = ? AND password = ?",
             [email, password]
         );
         
-        if (results === undefined || Object.keys(results).length === 0) {
+        if (results === undefined || results.length === 0) {
             return res.status(401).json({ error: "Unauthorized. Invalid credentials." });
         }
 
@@ -216,12 +216,12 @@ router.put("/change", async (req, res) => {
             return res.status(400).json({ error: "Bad Request. Check request payload." });
         }
 
-        const [results] = await db.query(
+        const results = await db.query(
             "SELECT * FROM user WHERE id = ?",
             [id]
         );
 
-        if ( results !== undefined && Object.keys(results).length > 0) {
+        if ( results !== undefined && results.length > 0) {
             let updateFields = [];
             let updateValues = [];
 
@@ -308,14 +308,12 @@ router.delete("/delete", async (req, res) => {
             return res.status(400).json({ error: "Bad Request. Check request payload." });
         }
 
-        const [results] = await db.query(
+        const results = await db.query(
             "SELECT * FROM user WHERE id = ?",
             [id]
         );
 
-        console.log("Results:", results);
-
-        if (Object.keys(results).length > 0) {
+        if (results.length > 0) {
             await db.query(
                 "DELETE FROM user WHERE id = ?",
                 [id]
