@@ -2,12 +2,11 @@ const express = require("express");
 const router = express.Router();
 const db = require("../database");
 
-// http://localhost:3000/api/user/register?email=user@example.com&username=john_doe&password=secretpassword
 /**
  * @swagger
  * /api/user/register:
  *   post:
- *     summary: Register a new user
+ *     summary: Register a new user http://localhost:3000/api/user/register?email=user@example.com&username=john_doe&password=secretpassword
  *     parameters:
  *       - name: email
  *         in: query
@@ -71,13 +70,12 @@ router.post("/register", async (req, res) => {
     }
 });
 
-// http://localhost:3000/api/user/register?email=user@example.com&password=secretpassword
-
 /**
  * @swagger
  * /api/user/login:
  *   get:
- *     summary: User login
+ *     summary: User login http://localhost:3000/api/user/register?email=user@example.com&password=secretpassword
+
  *     parameters:
  *       - name: email
  *         in: query
@@ -138,8 +136,8 @@ router.get("/login", async (req, res) => {
             "SELECT * FROM user WHERE email = ? AND password = ?",
             [email, password]
         );
-
-        if (results.length === 0) {
+        
+        if (results === undefined || Object.keys(results).length === 0) {
             return res.status(401).json({ error: "Unauthorized. Invalid credentials." });
         }
 
@@ -150,13 +148,11 @@ router.get("/login", async (req, res) => {
     }
 });
 
-// http://localhost:3000/api/user/rename?id=1&[newname, newemail, newpassword]=123
-
 /**
  * @swagger
  * /api/user/change:
  *   put:
- *     summary: Rename user information
+ *     summary: Rename user information http://localhost:3000/api/user/rename?id=1&[newname, newemail, newpassword]=123
  *     parameters:
  *       - name: id
  *         in: query
@@ -225,7 +221,7 @@ router.put("/change", async (req, res) => {
             [id]
         );
 
-        if (Object.keys(results).length > 0) {
+        if ( results !== undefined && Object.keys(results).length > 0) {
             let updateFields = [];
             let updateValues = [];
 
@@ -259,12 +255,11 @@ router.put("/change", async (req, res) => {
     }
 });
 
-// http://localhost:3000/api/user/delete?id=1
 /**
  * @swagger
  * /api/user/delete:
  *   delete:
- *     summary: Delete a user
+ *     summary: Delete a user http://localhost:3000/api/user/delete?id=1
  *     parameters:
  *       - name: id
  *         in: query

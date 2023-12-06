@@ -2,13 +2,11 @@ const express = require("express");
 const router = express.Router();
 const db = require("../database");
 
-// http://localhost:3000/api/waterdata/drink?id=1&water=123
-
 /**
  * @swagger
  * /api/waterdata/drink:
  *   post:
- *     summary: Record water intake
+ *     summary: Record water intake http://localhost:3000/api/waterdata/drink?id=1&water=123
  *     parameters:
  *       - name: id
  *         in: query
@@ -66,13 +64,11 @@ router.post("/drink", async (req, res) => {
     }
 });
 
-// http://localhost:3000/api/waterdata/getdrink?id=1
-
 /**
  * @swagger
  * /api/waterdata/getdrink:
  *   get:
- *     summary: Get recent water intake records
+ *     summary: Get recent water intake records http://localhost:3000/api/waterdata/getdrink?id=1
  *     parameters:
  *       - name: id
  *         in: query
@@ -117,7 +113,7 @@ router.get("/getdrink", async (req, res) => {
             'SELECT * FROM waterdata WHERE user_id = ? LIMIT 10;',
             [id]
         );
-        console.log( results)
+        console.log(results)
 
         return res.status(200).json({ data: results });
     } catch (error) {
