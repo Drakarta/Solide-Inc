@@ -6,7 +6,7 @@ const db = require("../database");
  * @swagger
  * /api/bottle/create:
  *   post:
- *     summary: Create a new bottle
+ *     summary: Create a new bottle http://localhost:3000/api/bottle/create?weight=123&name=bottle&user_id=1
  *     parameters:
  *       - name: weight
  *         in: query
@@ -74,7 +74,7 @@ router.post("/create", async (req, res) => {
  * @swagger
  * /api/bottle/rename:
  *   put:
- *     summary: Rename a bottle
+ *     summary: Rename a bottle http://localhost:3000/api/bottle/rename?id=1&newname=newname
  *     parameters:
  *       - name: id
  *         in: query
@@ -137,7 +137,7 @@ router.put("/rename", async (req, res) => {
  * @swagger
  * /api/bottle/delete:
  *   delete:
- *     summary: Delete a bottle
+ *     summary: Delete a bottle http://localhost:3000/api/bottle/delete?id=1
  *     parameters:
  *       - name: id
  *         in: query
@@ -195,7 +195,7 @@ router.delete("/delete", async (req, res) => {
  * @swagger
  * /api/bottle/get:
  *   get:
- *     summary: Get information about a bottle
+ *     summary: Get information about a bottle http://localhost:3000/api/bottle/get?id=1
  *     parameters:
  *       - name: id
  *         in: query
