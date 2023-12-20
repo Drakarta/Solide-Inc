@@ -1,62 +1,59 @@
-const mysql = require('mysql');
+const mysql = require('mysql2');
 
-const con = mysql.createConnection({
-  host: 'localhost',
-  user: 'root',
-  password: 'qwer',
+const connection = mysql.createConnection({
+  host: process.env.DB_HOST,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  port: process.env.DB_PORT,
 });
 
-con.connect(function (err) {
+connection.query("CREATE DATABASE IF NOT EXISTS SolideDB", function (err) {
   if (err) throw err;
-  console.log('Connected!');
-  con.query("CREATE DATABASE IF NOT EXISTS SolideDB", function (err, result) {
+  console.log("Database is created.");
+})
+
+connection.query(`
+  CREATE TABLE IF NOT EXISTS SolideDB.user (
+    id INT NOT NULL AUTO_INCREMENT, 
+    email VARCHAR(255), 
+    password VARCHAR(255), 
+    username VARCHAR(255), 
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, 
+    PRIMARY KEY (id)
+  )
+  `, function (err) {
     if (err) throw err;
-    console.log("Database is created.");
-  })  
-  con.query("USE SolideDB", function (err, result) {
+    console.log("User table created.")
+})
+
+connection.query(`
+  CREATE TABLE IF NOT EXISTS SolideDB.waterdata (
+    water_intake INT,
+    user_id INT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, 
+    FOREIGN KEY (user_id) REFERENCES user(id)
+  )
+`, function (err) {
     if (err) throw err;
-    console.log("SolideDB is selected.")
-  })
-  con.query(`
-    CREATE TABLE IF NOT EXISTS user (
-      id INT NOT NULL AUTO_INCREMENT, 
-      email VARCHAR(255), 
-      password VARCHAR(255), 
-      username VARCHAR(255), 
-      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, 
-      PRIMARY KEY (id)
-    )
-  `, function (err, result) {
-      if (err) throw err;
-      console.log("User table created.")
-  })
-  con.query(`
-    CREATE TABLE IF NOT EXISTS waterdata (
-      water_intake INT,
-      user_id INT,
-      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, 
-      FOREIGN KEY (user_id) REFERENCES user(id)
-    )
-  `, function (err, result) {
-      if (err) throw err;
-      console.log("Waterdata table created.")
-  })
-  con.query(`
-    CREATE TABLE IF NOT EXISTS bottle (
-      id INT NOT NULL,
-      name VARCHAR(255),
-      weight INT,
-      user_id INT,
-      PRIMARY KEY (id),
-      FOREIGN KEY (user_id) REFERENCES user(id)
-    )
-  `, function (err, result) {
-      if (err) throw err;
-      console.log("Bottle table created.")
-  })
-  con.end((err) => {
+    console.log("Waterdata table created.")
+})
+
+connection.query(`
+  CREATE TABLE IF NOT EXISTS SolideDB.bottle (
+    id INT NOT NULL,
+    name VARCHAR(255),
+    weight INT,
+    user_id INT,
+    PRIMARY KEY (id),
+    FOREIGN KEY (user_id) REFERENCES user(id)
+  )
+`, function (err) {
     if (err) throw err;
-    console.log("Connection closed.")
-    process.exit(0)
-  })
-});
+    console.log("Bottle table created.")
+})
+
+connection.end((err) => {
+  if (err) throw err;
+  console.log("Connection closed.")
+  process.exit(0)
+})
