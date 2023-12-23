@@ -1,0 +1,1 @@
+bun run setup && bun run dev

@@ -2,7 +2,7 @@
     "scripts": {
       "setup": "bun app/setup.js",
       "dev": "bun app/start.js",
-      "start": "docker-compose up --wait"
+      "start": "sh start.sh"
     },
     "dependencies": {
       "express": "^4.18.2",

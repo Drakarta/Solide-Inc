@@ -1,1 +1,1 @@
-bun run setup && bun run dev
+docker-compose up --wait
