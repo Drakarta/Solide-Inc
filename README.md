@@ -1,3 +1,3 @@
 # Solide-Inc
 
-# Run "run.sh"
+# Run "bun start"
