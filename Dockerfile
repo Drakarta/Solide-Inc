@@ -5,4 +5,4 @@ COPY . /usr/src/solide
 RUN bun install
 
 EXPOSE 3000/tcp
-CMD ["sh", "start.sh"]
+CMD ["sh", "dockerstart.sh"]
