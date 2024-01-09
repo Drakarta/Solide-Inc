@@ -149,7 +149,7 @@ router.get("/login", async (req, res) => {
             return res.status(401).json({ error: "Unauthorized. Invalid credentials." });
         }
 
-        return res.status(200).json({ data: "login successful", user: results.id });
+        return res.status(200).json({ data: {result: "login successful", user: results.id}});
     } catch (error) {
         console.error("Error querying the database:", error);
         return res.status(500).json({ error: "Internal Server Error" });
