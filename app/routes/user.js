@@ -57,6 +57,14 @@ router.post("/register", async (req, res) => {
             return res.status(400).json({ error: "Bad Request. Check request payload." });
         }
 
+        const results = await db.query(
+            'SELECT email FROM user WHERE email=?', [email]
+        )
+        
+        if (results === !undefined || results.length !== 0) {
+            return res.status(400).json({ error: "Email already exists" });
+        }
+
         await db.query(
             'INSERT INTO user (email, password, username) VALUES (?, ?, ?)',
             [email, password, username]
