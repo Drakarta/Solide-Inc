@@ -1,4 +1,5 @@
 const express = require('express');
+const cors = require('cors');
 const swaggerUi = require('swagger-ui-express');
 const swaggerSpec = require('./swagger');
 const db = require("./database");
@@ -9,7 +10,9 @@ const waterdata = require("./routes/waterdata");
 const app = express();
 const port = 3000;
 
+app.use(cors());
 app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+app.use(express.json());
 app.use("/api/bottle", bottle);
 app.use("/api/user", user);
 app.use("/api/waterdata", waterdata);

@@ -124,13 +124,13 @@ router.get("/getdrink", async (req, res) => {
 
 /**
  * @swagger
- * /api/waterdata/getall:
+ * /api/user/getall:
  *   get:
- *     summary: Retrieve all water data entries from the database.
- *     description: Returns a list of all water data entries stored in the database.
+ *     summary: Retrieve all users from the database. http://localhost:3000/api/user/getall
+ *     description: Returns a list of all registered users.
  *     responses:
  *       '200':
- *         description: A list of all water data entries retrieved successfully.
+ *         description: A list of all users retrieved successfully.
  *         schema:
  *           type: object
  *           properties:
@@ -141,22 +141,21 @@ router.get("/getdrink", async (req, res) => {
  *                 properties:
  *                   id:
  *                     type: integer
- *                     description: The ID of the water data entry.
- *                   parameter1:
+ *                     description: The ID of the user.
+ *                   email:
  *                     type: string
- *                     description: Description or name of parameter 1.
- *                   parameter2:
+ *                     description: The email address of the user.
+ *                   username:
  *                     type: string
- *                     description: Description or name of parameter 2.
- *                   ...
+ *                     description: The username of the user.
  *                   createdAt:
  *                     type: string
  *                     format: date-time
- *                     description: The date and time when the water data entry was created.
+ *                     description: The date and time when the user was created.
  *                   updatedAt:
  *                     type: string
  *                     format: date-time
- *                     description: The date and time when the water data entry was last updated.
+ *                     description: The date and time when the user was last updated.
  *       '500':
  *         description: Internal Server Error. An error occurred while processing the request.
  */

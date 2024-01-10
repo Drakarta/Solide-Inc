@@ -40,7 +40,7 @@ connection.query(`
 
 connection.query(`
   CREATE TABLE IF NOT EXISTS SolideDB.bottle (
-    id INT NOT NULL,
+    id INT NOT NULL AUTO_INCREMENT,
     name VARCHAR(255),
     weight INT,
     user_id INT,
