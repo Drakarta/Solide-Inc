@@ -122,5 +122,55 @@ router.get("/getdrink", async (req, res) => {
     }
 });
 
+/**
+ * @swagger
+ * /api/waterdata/getall:
+ *   get:
+ *     summary: Retrieve all water data entries from the database.
+ *     description: Returns a list of all water data entries stored in the database.
+ *     responses:
+ *       '200':
+ *         description: A list of all water data entries retrieved successfully.
+ *         schema:
+ *           type: object
+ *           properties:
+ *             data:
+ *               type: array
+ *               items:
+ *                 type: object
+ *                 properties:
+ *                   id:
+ *                     type: integer
+ *                     description: The ID of the water data entry.
+ *                   parameter1:
+ *                     type: string
+ *                     description: Description or name of parameter 1.
+ *                   parameter2:
+ *                     type: string
+ *                     description: Description or name of parameter 2.
+ *                   ...
+ *                   createdAt:
+ *                     type: string
+ *                     format: date-time
+ *                     description: The date and time when the water data entry was created.
+ *                   updatedAt:
+ *                     type: string
+ *                     format: date-time
+ *                     description: The date and time when the water data entry was last updated.
+ *       '500':
+ *         description: Internal Server Error. An error occurred while processing the request.
+ */
+router.get("/getall", async (req, res) => {
+    try {
+        const results = await db.query(
+            'SELECT * FROM waterdata;'
+        );
+
+        return res.status(200).json({ data: results });
+    } catch (error) {
+        console.error("Error querying the database:", error);
+        return res.status(500).json({ error: "Internal Server Error" });
+    }
+});
 
 module.exports = router;

@@ -65,9 +65,11 @@ router.post("/register", async (req, res) => {
             return res.status(400).json({ error: "Email already exists" });
         }
 
+        const hashPassword = await Bun.password.hash(password)
+
         await db.query(
             'INSERT INTO user (email, password, username) VALUES (?, ?, ?)',
-            [email, password, username]
+            [email, hashPassword, username]
         );
 
         console.log("User successfully inserted into the database");
@@ -141,15 +143,17 @@ router.get("/login", async (req, res) => {
         }
 
         const results = await db.query(
-            "SELECT * FROM user WHERE email = ? AND password = ?",
-            [email, password]
+            "SELECT * FROM user WHERE email = ?",
+            [email]
         );
         
-        if (results === undefined || results.length === 0) {
+        const isMatch = await Bun.password.verify(password, results[0].password)
+
+        if (results === undefined || results.length === 0 || isMatch === false) {
             return res.status(401).json({ error: "Unauthorized. Invalid credentials." });
         }
 
-        return res.status(200).json({ data: {result: "login successful", user: results.id}});
+        return res.status(200).json({ data: {result: "login successful", user: results[0].id}});
     } catch (error) {
         console.error("Error querying the database:", error);
         return res.status(500).json({ error: "Internal Server Error" });
@@ -334,6 +338,123 @@ router.delete("/delete", async (req, res) => {
         }
     } catch (error) {
         console.error("Error querying/deleting from the database:", error);
+        return res.status(500).json({ error: "Internal Server Error" });
+    }
+});
+
+/**
+ * @swagger
+ * /api/user/get:
+ *   get:
+ *     summary: Retrieve a user by ID from the database.
+ *     description: Returns a user record from the database based on the provided ID.
+ *     parameters:
+ *       - name: id
+ *         in: query
+ *         description: ID of the user to retrieve.
+ *         required: true
+ *         schema:
+ *           type: integer
+ *     responses:
+ *       '200':
+ *         description: User record retrieved successfully.
+ *         schema:
+ *           type: object
+ *           properties:
+ *             data:
+ *               type: array
+ *               items:
+ *                 type: object
+ *                 properties:
+ *                   id:
+ *                     type: integer
+ *                     description: The ID of the user.
+ *                   username:
+ *                     type: string
+ *                     description: The username of the user.
+ *                   email:
+ *                     type: string
+ *                     description: The email address of the user.
+ *                   ...
+ *                   createdAt:
+ *                     type: string
+ *                     format: date-time
+ *                     description: The date and time when the user record was created.
+ *                   updatedAt:
+ *                     type: string
+ *                     format: date-time
+ *                     description: The date and time when the user record was last updated.
+ *       '400':
+ *         description: Bad Request. The ID parameter is missing or invalid.
+ *       '500':
+ *         description: Internal Server Error. An error occurred while processing the request.
+ */
+router.get("/get", async (req, res) => {
+    try {
+        const { id } = req.query;
+
+        if (!id) {
+            return res.status(400).json({ error: "Bad Request. Check request payload." });
+        }
+
+        const results = await db.query(
+            "SELECT * FROM user WHERE id = ?",
+            [id]
+        );
+
+        return res.status(200).json({ data: results });
+    } catch (error) {
+        console.error("Error querying the database:", error);
+        return res.status(500).json({ error: "Internal Server Error" });
+    }
+});
+
+/**
+ * @swagger
+ * /api/user/getall:
+ *   get:
+ *     summary: Retrieve all users from the database. http://localhost:3000/api/user/getall
+ *     description: Returns a list of all registered users.
+ *     responses:
+ *       '200':
+ *         description: A list of all users retrieved successfully.
+ *         schema:
+ *           type: object
+ *           properties:
+ *             data:
+ *               type: array
+ *               items:
+ *                 type: object
+ *                 properties:
+ *                   id:
+ *                     type: integer
+ *                     description: The ID of the user.
+ *                   email:
+ *                     type: string
+ *                     description: The email address of the user.
+ *                   username:
+ *                     type: string
+ *                     description: The username of the user.
+ *                   createdAt:
+ *                     type: string
+ *                     format: date-time
+ *                     description: The date and time when the user was created.
+ *                   updatedAt:
+ *                     type: string
+ *                     format: date-time
+ *                     description: The date and time when the user was last updated.
+ *       '500':
+ *         description: Internal Server Error. An error occurred while processing the request.
+ */
+router.get("/getall", async (req, res) => {
+    try {
+        const results = await db.query(
+            "SELECT * FROM user"
+        );
+
+        return res.status(200).json({ data: results });
+    } catch (error) {
+        console.error("Error querying the database:", error);
         return res.status(500).json({ error: "Internal Server Error" });
     }
 });

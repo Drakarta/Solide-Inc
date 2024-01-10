@@ -248,4 +248,55 @@ router.get("/get", async (req, res) => {
     }
 })
 
+/**
+ * @swagger
+ * /api/bottle/getall:
+ *   get:
+ *     summary: Retrieve all bottle records from the database.
+ *     description: Returns a list of all bottle records stored in the database.
+ *     responses:
+ *       '200':
+ *         description: A list of all bottle records retrieved successfully.
+ *         schema:
+ *           type: object
+ *           properties:
+ *             data:
+ *               type: array
+ *               items:
+ *                 type: object
+ *                 properties:
+ *                   id:
+ *                     type: integer
+ *                     description: The ID of the bottle record.
+ *                   attribute1:
+ *                     type: string
+ *                     description: Description or name of attribute 1.
+ *                   attribute2:
+ *                     type: string
+ *                     description: Description or name of attribute 2.
+ *                   ...
+ *                   createdAt:
+ *                     type: string
+ *                     format: date-time
+ *                     description: The date and time when the bottle record was created.
+ *                   updatedAt:
+ *                     type: string
+ *                     format: date-time
+ *                     description: The date and time when the bottle record was last updated.
+ *       '500':
+ *         description: Internal Server Error. An error occurred while processing the request.
+ */
+router.get("/getall", async (req, res) => {
+    try {
+        const results = await db.query(
+            "SELECT * FROM bottle"
+        );
+
+        return res.status(200).json({ data: results });
+    } catch (error) {
+        console.error("Error querying the database:", error);
+        return res.status(500).json({ error: "Internal Server Error" });
+    }
+})
+
 module.exports = router;
