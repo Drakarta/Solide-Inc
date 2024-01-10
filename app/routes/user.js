@@ -346,8 +346,8 @@ router.delete("/delete", async (req, res) => {
  * @swagger
  * /api/user/get:
  *   get:
- *     summary: Retrieve a user by ID from the database.
- *     description: Returns a user record from the database based on the provided ID.
+ *     summary: Retrieve a user by ID. http://localhost:3000/api/waterdata/get?id=1
+ *     description: Fetches a user from the database based on the provided ID.
  *     parameters:
  *       - name: id
  *         in: query
@@ -358,36 +358,17 @@ router.delete("/delete", async (req, res) => {
  *     responses:
  *       '200':
  *         description: User record retrieved successfully.
- *         schema:
- *           type: object
- *           properties:
- *             data:
- *               type: array
- *               items:
- *                 type: object
- *                 properties:
- *                   id:
- *                     type: integer
- *                     description: The ID of the user.
- *                   username:
- *                     type: string
- *                     description: The username of the user.
- *                   email:
- *                     type: string
- *                     description: The email address of the user.
- *                   ...
- *                   createdAt:
- *                     type: string
- *                     format: date-time
- *                     description: The date and time when the user record was created.
- *                   updatedAt:
- *                     type: string
- *                     format: date-time
- *                     description: The date and time when the user record was last updated.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 data:
+ *                   $ref: '#/components/schemas/User'
  *       '400':
  *         description: Bad Request. The ID parameter is missing or invalid.
  *       '500':
- *         description: Internal Server Error. An error occurred while processing the request.
+ *         description: Internal Server Error.
  */
 router.get("/get", async (req, res) => {
     try {
@@ -414,37 +395,21 @@ router.get("/get", async (req, res) => {
  * /api/user/getall:
  *   get:
  *     summary: Retrieve all users from the database. http://localhost:3000/api/user/getall
- *     description: Returns a list of all registered users.
+ *     description: Fetches all user records from the database.
  *     responses:
  *       '200':
  *         description: A list of all users retrieved successfully.
- *         schema:
- *           type: object
- *           properties:
- *             data:
- *               type: array
- *               items:
- *                 type: object
- *                 properties:
- *                   id:
- *                     type: integer
- *                     description: The ID of the user.
- *                   email:
- *                     type: string
- *                     description: The email address of the user.
- *                   username:
- *                     type: string
- *                     description: The username of the user.
- *                   createdAt:
- *                     type: string
- *                     format: date-time
- *                     description: The date and time when the user was created.
- *                   updatedAt:
- *                     type: string
- *                     format: date-time
- *                     description: The date and time when the user was last updated.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 data:
+ *                   type: array
+ *                   items:
+ *                     $ref: '#/components/schemas/User'
  *       '500':
- *         description: Internal Server Error. An error occurred while processing the request.
+ *         description: Internal Server Error.
  */
 router.get("/getall", async (req, res) => {
     try {

@@ -250,6 +250,24 @@ router.get("/get", async (req, res) => {
 
 /**
  * @swagger
+ * /api/bottle/getall:
+ *   get:
+ *     summary: Retrieve all bottles from the database. http://localhost:3000/api/bottle/getall
+ *     description: Fetches all bottle records from the database.
+ *     responses:
+ *       '200':
+ *         description: A list of all bottles retrieved successfully.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 data:
+ *                   type: array
+ *                   items:
+ *                     $ref: '#/components/schemas/Bottle'
+ *       '500':
+ *         description: Internal Server Error.
  */
 router.get("/getall", async (req, res) => {
     try {
@@ -262,6 +280,5 @@ router.get("/getall", async (req, res) => {
         console.error("Error querying the database:", error);
         return res.status(500).json({ error: "Internal Server Error" });
     }
-})
-
+});
 module.exports = router;

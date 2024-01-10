@@ -124,40 +124,24 @@ router.get("/getdrink", async (req, res) => {
 
 /**
  * @swagger
- * /api/user/getall:
+ * /api/waterdata/getall:
  *   get:
- *     summary: Retrieve all users from the database. http://localhost:3000/api/user/getall
- *     description: Returns a list of all registered users.
+ *     summary: Retrieve all records from the waterdata table. http://localhost:3000/api/waterdata/getall
+ *     description: Fetches all records from the waterdata table in the database.
  *     responses:
  *       '200':
- *         description: A list of all users retrieved successfully.
- *         schema:
- *           type: object
- *           properties:
- *             data:
- *               type: array
- *               items:
- *                 type: object
- *                 properties:
- *                   id:
- *                     type: integer
- *                     description: The ID of the user.
- *                   email:
- *                     type: string
- *                     description: The email address of the user.
- *                   username:
- *                     type: string
- *                     description: The username of the user.
- *                   createdAt:
- *                     type: string
- *                     format: date-time
- *                     description: The date and time when the user was created.
- *                   updatedAt:
- *                     type: string
- *                     format: date-time
- *                     description: The date and time when the user was last updated.
+ *         description: A list of all records retrieved successfully.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 data:
+ *                   type: array
+ *                   items:
+ *                     $ref: '#/components/schemas/WaterData'
  *       '500':
- *         description: Internal Server Error. An error occurred while processing the request.
+ *         description: Internal Server Error.
  */
 router.get("/getall", async (req, res) => {
     try {
