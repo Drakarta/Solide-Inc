@@ -6,6 +6,7 @@ const db = require("./database");
 const bottle = require("./routes/bottle");
 const user = require("./routes/user");
 const waterdata = require("./routes/waterdata");
+const goal = require("./routes/goal");
 
 const app = express();
 const port = 3000;
@@ -16,6 +17,7 @@ app.use(express.json());
 app.use("/api/bottle", bottle);
 app.use("/api/user", user);
 app.use("/api/waterdata", waterdata);
+app.use("/api/goal", goal);   
 
 app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);

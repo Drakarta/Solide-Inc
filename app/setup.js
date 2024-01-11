@@ -18,6 +18,7 @@ connection.query(`
     email VARCHAR(255), 
     password VARCHAR(255), 
     username VARCHAR(255), 
+    water_goal INT DEFAULT 2000,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, 
     PRIMARY KEY (id)
   )

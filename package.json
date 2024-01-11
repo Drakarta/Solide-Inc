@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "setup": "bun app/setup.js",
+    "setup": "sleep 5 && bun app/setup.js",
     "dev": "bun app/start.js",
     "start": "sh start.sh"
   },
