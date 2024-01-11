@@ -45,7 +45,7 @@ router.get("/get", async (req, res) => {
 /**
  * @swagger
  * /api/goal/change:
- *   get:
+ *   put:
  *     summary: Update user's water goal by ID. http://localhost:3000/api/goal/change?id=1&newGoal=3000
  *     description: Endpoint to update the water goal of a user by their ID.
  *     parameters:
