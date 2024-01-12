@@ -80,7 +80,7 @@ router.put("/change", async (req, res) => {
             [newGoal, id]
         )
 
-        return res.status(200).json({ data: results[0].water_goal });
+        return res.status(200).json({ data: "successfully changed goal" });
 
     } catch (err) {
         return res.status(500).json({ error: err.message });
