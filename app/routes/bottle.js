@@ -250,6 +250,63 @@ router.get("/get", async (req, res) => {
 
 /**
  * @swagger
+ * /api/bottle/getalluser:
+ *   get:
+ *     summary: Get information about a bottle http://localhost:3000/api/bottle/get?user_id=1
+ *     parameters:
+ *       - name: user_id
+ *         in: query
+ *         type: integer
+ *         required: true
+ *         description: The ID of the bottle to retrieve information.
+ *     responses:
+ *       '200':
+ *         description: Successfully retrieved bottle information
+ *         schema:
+ *           type: object
+ *           properties:
+ *             data:
+ *               type: object
+ *               description: Bottle information
+ *       '400':
+ *         description: Bad Request. Check request payload.
+ *         schema:
+ *           type: object
+ *           properties:
+ *             error:
+ *               type: string
+ *               description: Error message
+ *       '500':
+ *         description: Internal Server Error
+ *         schema:
+ *           type: object
+ *           properties:
+ *             error:
+ *               type: string
+ *               description: Error message
+*/
+router.get("/getalluser", async (req, res) => {
+    try {
+        const { user_id } = req.query;
+
+        if (!user_id) {
+            return res.status(400).json({ error: "Bad Request. Check request payload." });
+        }
+
+        const results = await db.query(
+            "SELECT * FROM bottle WHERE user_id = ?",
+            [user_id]
+        );
+
+        return res.status(200).json({ data: results });
+    } catch (error) {
+        console.error("Error querying the database:", error);
+        return res.status(500).json({ error: "Internal Server Error" });
+    }
+})
+
+/**
+ * @swagger
  * /api/bottle/getall:
  *   get:
  *     summary: Retrieve all bottles from the database. http://localhost:3000/api/bottle/getall
