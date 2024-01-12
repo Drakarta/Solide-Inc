@@ -249,7 +249,8 @@ router.put("/change", async (req, res) => {
 
             if (newpassword) {
                 updateFields.push("password = ?");
-                updateValues.push(newpassword);
+                const hashPassword = await Bun.password.hash(newpassword)
+                updateValues.push(hashPassword);
             }
 
             const updateQuery = `UPDATE user SET ${updateFields.join(', ')} WHERE id = ?`;
