@@ -1,1 +1,1 @@
-docker-compose up --wait
+docker-compose build && docker-compose up
