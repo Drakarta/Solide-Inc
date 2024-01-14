@@ -12,6 +12,7 @@ connection.query("CREATE DATABASE IF NOT EXISTS SolideDB", function (err) {
   console.log("Database is created.");
 })
 
+// Create user table
 connection.query(`
   CREATE TABLE IF NOT EXISTS SolideDB.user (
     id INT NOT NULL AUTO_INCREMENT, 
@@ -27,6 +28,7 @@ connection.query(`
     console.log("User table created.")
 })
 
+// Create waterdata table
 connection.query(`
   CREATE TABLE IF NOT EXISTS SolideDB.waterdata (
     water_intake INT,
@@ -39,6 +41,7 @@ connection.query(`
     console.log("Waterdata table created.")
 })
 
+// Create bottle table
 connection.query(`
   CREATE TABLE IF NOT EXISTS SolideDB.bottle (
     id INT NOT NULL AUTO_INCREMENT,
@@ -53,6 +56,7 @@ connection.query(`
     console.log("Bottle table created.")
 })
 
+// finish the connection
 connection.end((err) => {
   if (err) throw err;
   console.log("Connection closed.")

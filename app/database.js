@@ -1,6 +1,7 @@
 const mysql = require('mysql2')
 const util = require('util')
 
+// Create connection and import settings
 const db = mysql.createPool({
   host: process.env.DB_HOST,
   user: process.env.DB_USER,

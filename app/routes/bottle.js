@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const db = require("../database");
 
+// Swagger doc for /api/bottle/create
 /**
  * @swagger
  * /api/bottle/create:
@@ -49,27 +50,30 @@ const db = require("../database");
  *               type: string
  *               description: Error message
 */
+// Create a new bottle on /api/bottle/create
 router.post("/create", async (req, res) => {
     try {
+        // Get bottle weight, name, and user ID from request body
         const { weight, name, user_id } = req.query;
-
+        // Check if bottle weight, name, and user ID are valid
         if ( !weight || !name || !user_id ) {
             return res.status(400).json({ error: "Bad Request. Check request payload." });
         }
-
+        // Insert bottle into the database
         await db.query(
             "INSERT INTO bottle (weight, name, user_id) VALUES (?, ?, ?)",
             [weight, name, user_id]
         );
-
-        console.log("Bottle successfully inserted into the database");
+        // Return success message
         return res.status(200).json({ data: "bottle created" });
-    } catch (error) {   
+    } catch (error) {
+        // Catch and log error   
         console.error("Error inserting into the database:", error);
         return res.status(500).json({ error: "Internal Server Error" });
     }
 });
 
+// Swagger doc for /api/bottle/rename
 /**
  * @swagger
  * /api/bottle/rename:
@@ -112,27 +116,30 @@ router.post("/create", async (req, res) => {
  *               type: string
  *               description: Error message
 */
+// Rename a bottle on /api/bottle/rename
 router.put("/rename", async (req, res) => {
     try {
+        // Get bottle ID and new name from request body
         const { id, newname } = req.query;
-
+        // Check if bottle ID and new name are valid
         if (!id || !newname) {
             return res.status(400).json({ error: "Bad Request. Check request payload." });
         }
-
+        // Update bottle in the database
         await db.query(
             "UPDATE bottle SET name = ? WHERE id = ?",
             [newname, id]
         );
-
-        console.log("Bottle successfully updated in the database");
+        // Return success message
         return res.status(200).json({ data: "bottle updated" });
     } catch (error) {
+        // Catch and log error
         console.error("Error updating the database:", error);
         return res.status(500).json({ error: "Internal Server Error" });
     }
 })
 
+// Swagger doc for /api/bottle/updateweight
 /**
  * @swagger
  * /api/bottle/delete:
@@ -170,27 +177,30 @@ router.put("/rename", async (req, res) => {
  *               type: string
  *               description: Error message
 */
+// Delete a bottle on /api/bottle/delete
 router.delete("/delete", async (req, res) => {
     try {
+        // Get bottle ID from request body
         const { id } = req.query;
-
+        // Check if bottle ID is valid
         if (!id) {
             return res.status(400).json({ error: "Bad Request. Check request payload." });
         }
-
+        // Delete bottle from the database
         await db.query(
             "DELETE FROM bottle WHERE id = ?",
             [id]
         );
-
-        console.log("Bottle successfully deleted from the database");
+        // Return success message
         return res.status(200).json({ data: "bottle deleted" });
     } catch (error) {
+        //  Catch and log error
         console.error("Error deleting from the database:", error);
         return res.status(500).json({ error: "Internal Server Error" });
     }
 })
 
+// Swagger doc for /api/bottle/updateweight
 /**
  * @swagger
  * /api/bottle/get:
@@ -228,26 +238,30 @@ router.delete("/delete", async (req, res) => {
  *               type: string
  *               description: Error message
 */
+// Get information about a bottle on /api/bottle/get
 router.get("/get", async (req, res) => {
     try {
+        // Get bottle ID from request body
         const { id } = req.query;
-
+        // Check if bottle ID is valid
         if (!id) {
             return res.status(400).json({ error: "Bad Request. Check request payload." });
         }
-
+        // Query the database for the bottle
         const results = await db.query(
             "SELECT * FROM bottle WHERE id = ?",
             [id]
         );
-
+        // Return success message
         return res.status(200).json({ data: results });
     } catch (error) {
+        // Catch and log error
         console.error("Error querying the database:", error);
         return res.status(500).json({ error: "Internal Server Error" });
     }
 })
 
+// Swagger doc for /api/bottle/updateweight
 /**
  * @swagger
  * /api/bottle/getalluser:
@@ -285,26 +299,30 @@ router.get("/get", async (req, res) => {
  *               type: string
  *               description: Error message
 */
+//  Get information about a bottle on /api/bottle/get
 router.get("/getalluser", async (req, res) => {
     try {
+        // Get bottle ID from request body
         const { user_id } = req.query;
-
+        // Check if bottle ID is valid
         if (!user_id) {
             return res.status(400).json({ error: "Bad Request. Check request payload." });
         }
-
+        //  Query the database for the bottle
         const results = await db.query(
             "SELECT * FROM bottle WHERE user_id = ?",
             [user_id]
         );
-
+        // Return success message
         return res.status(200).json({ data: results });
     } catch (error) {
+        // Catch and log error
         console.error("Error querying the database:", error);
         return res.status(500).json({ error: "Internal Server Error" });
     }
 })
 
+// Swagger doc for /api/bottle/updateweight
 /**
  * @swagger
  * /api/bottle/getall:
@@ -326,16 +344,20 @@ router.get("/getalluser", async (req, res) => {
  *       '500':
  *         description: Internal Server Error.
  */
+// Get all bottles on /api/bottle/getall
 router.get("/getall", async (req, res) => {
     try {
+        // Query the database for all bottles
         const results = await db.query(
             "SELECT * FROM bottle"
         );
-
+        // Return success message
         return res.status(200).json({ data: results });
     } catch (error) {
+        //  Catch and log error
         console.error("Error querying the database:", error);
         return res.status(500).json({ error: "Internal Server Error" });
     }
 });
+
 module.exports = router;
